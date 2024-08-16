@@ -7,6 +7,9 @@ export default defineConfig({
   plugins: [react(), basicSsl()],
   build: {
     outDir: './docs',
+    rollupOptions: {
+      external: ['@web3modal/common', '@web3modal/core', '@web3modal/wallet'],
+    },
   },
   base: './',
 });

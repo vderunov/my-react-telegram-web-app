@@ -3,77 +3,73 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 
-import { PrivyProvider, usePrivy } from '@privy-io/react-auth';
-
 import WebApp from '@twa-dev/sdk';
 
-function LoginPrivyButton() {
-  const { ready, authenticated, login } = usePrivy();
-  const disableLogin = !ready || (ready && authenticated);
+import {
+  createWeb3Modal,
+  defaultConfig,
+  useWeb3Modal,
+  useWalletInfo,
+} from '@web3modal/ethers/react';
+
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || '';
+
+const mainnet = {
+  chainId: 1,
+  name: 'Ethereum',
+  currency: 'ETH',
+  explorerUrl: 'https://etherscan.io',
+  rpcUrl: 'https://cloudflare-eth.com',
+};
+
+const metadata = {
+  name: 'ton-test-2',
+  description: 'AppKit Example',
+  url: 'https://web3modal.com',
+  icons: ['https://avatars.githubusercontent.com/u/37784886'],
+};
+
+const ethersConfig = defaultConfig({
+  /*Required*/
+  metadata,
+
+  /*Optional*/
+  enableEIP6963: true, // true by default
+  enableInjected: true, // true by default
+  enableCoinbase: true, // true by default
+  rpcUrl: '...', // used for the Coinbase SDK
+  defaultChainId: 1, // used for the Coinbase SDK
+});
+
+createWeb3Modal({
+  ethersConfig,
+  chains: [mainnet],
+  projectId,
+  enableAnalytics: true, // Optional - defaults to your Cloud configuration
+});
+
+function ConnectButton() {
+  const { open } = useWeb3Modal();
 
   return (
-    <button disabled={disableLogin} onClick={login}>
-      Log in
-    </button>
-  );
-}
-
-function LogoutPrivyButton() {
-  const { ready, authenticated, logout } = usePrivy();
-  const disableLogout = !ready || (ready && !authenticated);
-
-  return (
-    <button disabled={disableLogout} onClick={logout}>
-      Log out
-    </button>
-  );
-}
-
-function User() {
-  const { ready, authenticated, user } = usePrivy();
-
-  // Show nothing if user is not authenticated or data is still loading
-  if (!(ready && authenticated) || !user) {
-    return null;
-  }
-
-  return (
-    <div>
-      <p>User {user.id} has linked the following accounts:</p>
-      <ul>
-        <li>Apple: {user.apple ? user.apple.email : 'None'}</li>
-        <li>Discord: {user.discord ? user.discord.username : 'None'}</li>
-        <li>Email: {user.email ? user.email.address : 'None'}</li>
-        <li>Farcaster: {user.farcaster ? user.farcaster.username : 'None'}</li>
-        <li>GitHub: {user.github ? user.github.username : 'None'}</li>
-        <li>Google: {user.google ? user.google.email : 'None'}</li>
-        <li>Instagram: {user.instagram ? user.instagram.username : 'None'}</li>
-        <li>LinkedIn: {user.linkedin ? user.linkedin.email : 'None'}</li>
-        <li>Phone: {user.phone ? user.phone.number : 'None'}</li>
-        <li>Spotify: {user.spotify ? user.spotify.email : 'None'}</li>
-        <li>Telegram: {user.telegram ? user.telegram.username : 'None'}</li>
-        <li>TikTok: {user.tiktok ? user.tiktok.email : 'None'}</li>
-        <li>Twitter: {user.twitter ? user.twitter.username : 'None'}</li>
-        <li>Wallet: {user.wallet ? user.wallet.address : 'None'}</li>
-      </ul>
-    </div>
+    <>
+      <button onClick={() => open()}>Open Connect Modal</button>
+      <button onClick={() => open({ view: 'Networks' })}>
+        Open Network Modal
+      </button>
+    </>
   );
 }
 
 function App() {
   const [count, setCount] = useState(0);
 
+  const { walletInfo } = useWalletInfo();
+
+  console.log(walletInfo?.name, walletInfo?.icon);
+
   return (
-    <PrivyProvider
-      appId={import.meta.env.VITE_PRIVY_APP_ID || ''}
-      config={{
-        appearance: {
-          theme: 'dark',
-          walletList: ['detected_wallets', 'metamask'],
-        },
-        loginMethods: ['email'],
-      }}
-    >
+    <>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -82,7 +78,7 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React + Privy</h1>
+      <h1>Vite + React + WalletConnect</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -98,10 +94,10 @@ function App() {
           Show Alert
         </button>
       </div>
-      <LogoutPrivyButton />
-      <LoginPrivyButton />
-      <User />
-    </PrivyProvider>
+      <ConnectButton />
+      <p>walletInfo NAME: {walletInfo?.name ? walletInfo?.name : 'None'}</p>
+      <p>walletInfo ICON: {walletInfo?.icon ? walletInfo?.icon : 'None'}</p>
+    </>
   );
 }
 
