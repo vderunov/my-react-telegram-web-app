@@ -63,8 +63,6 @@ function User() {
 function App() {
   const [count, setCount] = useState(0);
 
-  console.log(import.meta.env.VITE_PRIVY_APP_ID);
-
   return (
     <PrivyProvider
       appId={import.meta.env.VITE_PRIVY_APP_ID || ''}
