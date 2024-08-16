@@ -1633,7 +1633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@web3modal/common@npm:5.1.0":
+"@web3modal/common@npm:5.1.0, @web3modal/common@npm:^5.1.0":
   version: 5.1.0
   resolution: "@web3modal/common@npm:5.1.0"
   dependencies:
@@ -1643,7 +1643,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@web3modal/core@npm:5.1.0":
+"@web3modal/core@npm:5.1.0, @web3modal/core@npm:^5.1.0":
   version: 5.1.0
   resolution: "@web3modal/core@npm:5.1.0"
   dependencies:
@@ -1797,7 +1797,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@web3modal/wallet@npm:5.1.0":
+"@web3modal/wallet@npm:5.1.0, @web3modal/wallet@npm:^5.1.0":
   version: 5.1.0
   resolution: "@web3modal/wallet@npm:5.1.0"
   dependencies:
@@ -4477,7 +4477,10 @@ __metadata:
     "@types/react-dom": "npm:^18.3.0"
     "@vitejs/plugin-basic-ssl": "npm:^1.1.0"
     "@vitejs/plugin-react": "npm:^4.3.1"
+    "@web3modal/common": "npm:^5.1.0"
+    "@web3modal/core": "npm:^5.1.0"
     "@web3modal/ethers": "npm:^5.1.0"
+    "@web3modal/wallet": "npm:^5.1.0"
     buffer: "npm:^6.0.3"
     eslint: "npm:^9.9.0"
     eslint-plugin-react: "npm:^7.35.0"
