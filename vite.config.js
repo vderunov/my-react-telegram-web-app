@@ -6,7 +6,19 @@ import basicSsl from '@vitejs/plugin-basic-ssl';
 export default defineConfig({
   plugins: [react(), basicSsl()],
   build: {
-    outDir: './docs'
+    outDir: './docs',
+    rollupOptions: {
+      external: ['react-is', 'lit-html']
+    },
+    optimizeDeps: {
+      include: ['react-is', 'lit-html']
+    }
+  },
+  resolve: {
+    alias: {
+      // Polyfill Buffer globally for older packages
+      buffer: 'buffer/',
+    },
   },
   base: './'
 });
